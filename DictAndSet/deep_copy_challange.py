@@ -19,7 +19,8 @@ def my_deepcopy(d: dict) -> dict:
     return deep_d
 
 
-recipes_copy = my_deepcopy(recipes)
-recipes_copy["Butter chicken"]["ginger"] = 300
-print(recipes_copy["Butter chicken"]["ginger"])
-print(recipes["Butter chicken"]["ginger"])
+if __name__ == "__main__":
+    recipes_copy = my_deepcopy(recipes)
+    recipes_copy["Butter chicken"]["ginger"] = 300
+    print(recipes_copy["Butter chicken"]["ginger"])
+    print(recipes["Butter chicken"]["ginger"])
