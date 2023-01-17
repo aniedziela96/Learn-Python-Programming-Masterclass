@@ -2,20 +2,20 @@ import csv
 
 input_filename = 'country_info.txt'
 
+dialect = csv.excel
+dialect.delimiter = '|'
+
 countries = {}
 with open(input_filename, encoding='utf-8', newline='') as country_file:
-    sample = ""
-    for line in range(3):
-        sample += country_file.read()
-    country_dialect = csv.Sniffer().sniff(sample)
-    country_dialect.skipinitialspace = True
-    country_file.seek(0)
-    reader = csv.DictReader(country_file, dialect=country_dialect)
-    for row in reader:
-        country_dict = row
-        print(country_dict)
+    # Get the column heading from the first line of the file
+    headings = country_file.readline().strip('\n').split(dialect.delimiter)
+    for index, heading in enumerate(headings):
+        headings[index] = heading.casefold()
 
-    countries[country_dict['Country']] = country_dict
+    reader = csv.DictReader(country_file, dialect=dialect, fieldnames=headings)
+    for row in reader:
+        countries[row['country'].casefold()] = row
+        countries[row['cc'].casefold()] = row
 
 print(countries)
 
@@ -24,6 +24,6 @@ while True:
     country_key = chosen_country.casefold()
     if country_key in countries:
         country_data = countries[country_key]
-        print(f"The capital of {chosen_country} is {country_data['Capital']}")
+        print(f"The capital of {chosen_country} is {country_data['capital']}")
     elif chosen_country == 'quit':
         break
